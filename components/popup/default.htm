@@ -1,5 +1,5 @@
 {% if __SELF__.checkPopup() %}
-<div class="popup" id="{{ id }}">
+<div id="{{ __SELF__.getId() }}" class="popup mfp-hide">
 {% partial __SELF__.getPartial() %}
 </div>
 {% endif %}

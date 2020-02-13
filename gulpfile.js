@@ -44,9 +44,9 @@ gulp.task('clean', function () {
     return del(paths.clean);
 });
 
-gulp.task('scss', function () {
+gulp.task('scss:component', function () {
     return gulp.src([
-        paths.src.scss + 'styles.scss',
+        paths.src.scss + 'popup-component.scss',
     ])
         .pipe(gulpif(!prod, sourcemaps.init()))
         .pipe(sass({
@@ -57,7 +57,7 @@ gulp.task('scss', function () {
             ]
         }))
         .pipe(postcss(postCssPlugins))
-        .pipe(concat('styles.min.css'))
+        .pipe(concat('popup-component.min.css'))
         .pipe(gulpif(!prod, sourcemaps.write('.')))
         .pipe(gulp.dest(paths.build.css));
 });
@@ -74,22 +74,22 @@ const jsUglifyCondition = function(file) {
     return true;
 };
 
-gulp.task('js', function () {
+gulp.task('js:component', function () {
     return gulp.src([
         'node_modules/magnific-popup/dist/jquery.magnific-popup.min.js',
-        paths.src.js + 'scripts.js',
+        paths.src.js + 'popup-component.js',
     ])
         .pipe(gulpif(!prod, sourcemaps.init()))
         .pipe(babel())
         .pipe(gulpif(jsUglifyCondition, uglify({mangle: false})))
-        .pipe(concat('scripts.min.js'))
+        .pipe(concat('popup-component.min.js'))
         .pipe(gulpif(!prod, sourcemaps.write('.')))
         .pipe(gulp.dest(paths.build.js));
 });
 
 gulp.task('watch',  gulp.parallel(function () {
-    gulp.watch(paths.watch.scss, gulp.parallel('scss'));
-    gulp.watch(paths.watch.js, gulp.parallel('js'));
+    gulp.watch(paths.watch.scss, gulp.parallel('scss:component'));
+    gulp.watch(paths.watch.js, gulp.parallel('js:component'));
 }));
 
 gulp.task('zip', function () {
@@ -109,6 +109,6 @@ gulp.task('zip', function () {
         .pipe(gulp.dest('.'));
 });
 
-gulp.task('build', gulp.series('clean', gulp.parallel('scss', 'js'), 'zip'));
+gulp.task('build', gulp.series('clean', gulp.parallel('scss:component', 'js:component'), 'zip'));
 
 gulp.task('default', gulp.series('build'));

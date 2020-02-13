@@ -63,4 +63,14 @@ class Popup extends ComponentBase
     public function getPartial() {
         return $this->popup->getPartial();
     }
+
+    public function getId() {
+        return 'popup-' . $this->popup->getName();
+    }
+
+    public function onRun()
+    {
+        $this->addCss('/plugins/eev/popups/assets/css/popup-component.min.css');
+        $this->addJs('/plugins/eev/popups/assets/js/popup-component.min.js');
+    }
 }

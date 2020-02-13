@@ -1,0 +1,6 @@
+plugin:
+    name: 'eev.popups::lang.plugin.name'
+    description: 'eev.popups::lang.plugin.description'
+    author: 'Evgeny Epifanov'
+    icon: icon-bell
+    homepage: 'https://eecode.ru'

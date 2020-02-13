@@ -5,6 +5,7 @@ use EEV\Popups\Classes\Popup;
 return [
     'popups' => [
         Popup::make('popup-1')
-            ->setDisplayName('Форма обратной связи'),
+            ->setDisplayName('Форма обратной связи')
+            ->setPartial('modals/popup'),
     ],
 ];

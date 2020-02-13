@@ -51,11 +51,16 @@ class Popup extends ComponentBase
         if (!empty($this->popup)) {
             return true;
         }
+
         return false;
     }
 
     public function getPopupOptions()
     {
         return \EEV\Popups\Classes\Popup::getFormsList();
+    }
+
+    public function getPartial() {
+        return $this->popup->getPartial();
     }
 }

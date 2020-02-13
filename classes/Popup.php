@@ -10,6 +10,8 @@ class Popup
 
     protected $displayName;
 
+    protected $partial;
+
     public function __construct($name)
     {
         $this->name = $name;
@@ -71,5 +73,14 @@ class Popup
     public function getDisplayName()
     {
         return $this->displayName;
+    }
+
+    public function setPartial($partial) {
+        $this->partial = $partial;
+        return $this;
+    }
+
+    public function getPartial() {
+        return $this->partial;
     }
 }

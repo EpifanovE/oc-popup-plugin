@@ -14,17 +14,17 @@ const uglify = require('gulp-uglify');
 let prod = process.env.NODE_ENV === 'production';
 
 const paths = {
-    build : {
-        js : 'assets/js/',
-        css : 'assets/css/',
+    build: {
+        js: 'assets/js/',
+        css: 'assets/css/',
     },
-    src : {
-        js : 'src/js/',
-        scss : 'src/scss/',
+    src: {
+        js: 'src/js/',
+        scss: 'src/scss/',
     },
     watch: {
-        js : 'src/js/**/*',
-        scss : 'src/scss/**/*'
+        js: 'src/js/**/*',
+        scss: 'src/scss/**/*'
     },
     clean: [
         'assets/js/**/*',
@@ -62,7 +62,7 @@ gulp.task('scss:component', function () {
         .pipe(gulp.dest(paths.build.css));
 });
 
-const jsUglifyCondition = function(file) {
+const jsUglifyCondition = function (file) {
     if (!prod) {
         return false;
     }
@@ -87,10 +87,16 @@ gulp.task('js:component', function () {
         .pipe(gulp.dest(paths.build.js));
 });
 
-gulp.task('watch',  gulp.parallel(function () {
-    gulp.watch(paths.watch.scss, gulp.parallel('scss:component'));
-    gulp.watch(paths.watch.js, gulp.parallel('js:component'));
-}));
+const scssTasks = gulp.parallel('scss:component');
+const jsTasks = gulp.parallel('js:component');
+
+gulp.task('watch', gulp.series(
+    'clean',
+    gulp.parallel(scssTasks, jsTasks),
+    gulp.parallel(function () {
+        gulp.watch(paths.watch.scss, scssTasks);
+        gulp.watch(paths.watch.js, jsTasks);
+    })));
 
 gulp.task('zip', function () {
     return gulp.src([
@@ -109,6 +115,6 @@ gulp.task('zip', function () {
         .pipe(gulp.dest('.'));
 });
 
-gulp.task('build', gulp.series('clean', gulp.parallel('scss:component', 'js:component'), 'zip'));
+gulp.task('build', gulp.series('clean', gulp.parallel(scssTasks, jsTasks), 'zip'));
 
 gulp.task('default', gulp.series('build'));

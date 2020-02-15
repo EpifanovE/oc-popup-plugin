@@ -4,8 +4,29 @@
 .popup {
   position: relative;
   background: #FFF;
-  padding: 20px;
+  padding: 2rem;
   width: auto;
   max-width: 500px;
   margin: 20px auto;
+
+  &_sm {
+    max-width: 300px;
+    padding: 1.25rem;
+  }
+
+  &_md {
+    max-width: 800px;
+  }
+
+  &_lg {
+    max-width: 1140px;
+  }
+
+  &__title {
+
+  }
+
+  &__content {
+
+  }
 }

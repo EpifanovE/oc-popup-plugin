@@ -4,6 +4,7 @@ namespace EEV\Popups\Components;
 
 use Cms\Classes\CodeBase;
 use Cms\Classes\ComponentBase;
+use EEV\Popups\Classes\Exceptions\PopupException;
 
 class Popup extends ComponentBase
 {
@@ -27,11 +28,27 @@ class Popup extends ComponentBase
     public function defineProperties()
     {
         return [
+            'title' => [
+                'title' => 'eev.popups::lang.title',
+                'description' => '',
+                'default' => '',
+                'type' => 'string',
+                'showExternalParam' => false,
+                'group' => 'eev.popups::lang.content',
+            ],
             'popup' => [
                 'title' => 'eev.popups::lang.popup',
                 'description' => '',
                 'default' => 'none',
                 'type' => 'dropdown',
+                'showExternalParam' => false,
+                'group' => 'eev.popups::lang.params',
+            ],
+            'show_title' => [
+                'title' => 'eev.popups::lang.show_title',
+                'description' => '',
+                'default' => false,
+                'type' => 'checkbox',
                 'showExternalParam' => false,
                 'group' => 'eev.popups::lang.params',
             ],
@@ -46,7 +63,7 @@ class Popup extends ComponentBase
         ];
     }
 
-    public function checkPopup()
+    public function checkPopup(): bool
     {
         if (!empty($this->popup)) {
             return true;
@@ -55,17 +72,60 @@ class Popup extends ComponentBase
         return false;
     }
 
-    public function getPopupOptions()
+    public function getPopupOptions(): array
     {
         return \EEV\Popups\Classes\Popup::getFormsList();
     }
 
-    public function getPartial() {
+    public function getPartial(): string
+    {
         return $this->popup->getPartial();
     }
 
-    public function getId() {
-        return 'popup-' . $this->popup->getName();
+    public function getId()
+    {
+        return $this->popup->getName();
+    }
+
+    public function getClasses(): string
+    {
+        $classes = [
+            'popup',
+            'popup_' . $this->popup->getName(),
+            'mfp-hide',
+        ];
+
+        if (!empty($this->property('adv_class'))) {
+            $classes[] = $this->property('adv_class');
+        }
+
+        return join(' ', $classes);
+    }
+
+    public function getData(): array
+    {
+        $data = [];
+
+        $data['type'] = $this->popup->getType();
+
+        return $data;
+    }
+
+    public function getTitle(): string
+    {
+        if (!$this->property('show_title')) {
+            return '';
+        }
+
+        if (!empty($this->property('title'))) {
+            return $this->property('title');
+        }
+
+        if (!$this->popup->getTitle()) {
+            return '';
+        }
+
+        return $this->popup->getTitle();
     }
 
     public function onRun()
